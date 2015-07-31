@@ -1,0 +1,8 @@
+{% extends 'blog_base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<p>{{ test }}</p>
+<p>{{ welcome }}</p>
+<img src="{% static 'img/logo.png' %}">
+{% endblock %}
