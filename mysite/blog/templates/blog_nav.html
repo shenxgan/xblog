@@ -15,6 +15,16 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">Link</a></li>
+        <li>
+        <div class="sign-in-up">
+          <a href="{% url 'register' %}" class="btn btn-info">注册</a>
+        </div>
+        </li>
+        <li>
+        <div class="sign-in-up">
+          <a href="{% url 'login' %}?next={{ request.path  }}" class="btn btn-info">登录</a>
+        </div>
+        </li>
       </ul>
     </div>
   </div>
