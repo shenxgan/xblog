@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.contrib.sitemaps import Sitemap
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http import Http404
 from django.shortcuts import render
 from django.views.generic.edit import FormView
@@ -7,6 +8,13 @@ from django.views.generic.detail import DetailView
 
 from models import Article
 from forms import ArticlePublishForm
+
+
+class AdminRequiredMixin(object):
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super(AdminRequiredMixin, cls).as_view(**initkwargs)
+        return staff_member_required(view)
 
 
 class BlogSitemap(Sitemap):
@@ -31,19 +39,18 @@ def blog_index(request):
     return render(request, 'blog_index.html', context)
 
 
-class ArticlePublishView(FormView):
+class ArticlePublishView(AdminRequiredMixin, FormView):
     template_name = 'article_publish.html'
     form_class = ArticlePublishForm
-    success_url = '/blog/'
 
     def form_valid(self, form):
         form.save(self.request.user.username)
         return super(ArticlePublishView, self).form_valid(form)
 
-    #def get_success_url(self):
-    #    title = self.request.POST.get('title')
-    #    success_url = '/article/%s' % (title)
-    #    return success_url
+    def get_success_url(self):
+        title = self.request.POST.get('title')
+        success_url = reverse('article_detail', args=(title,))
+        return success_url
 
 
 class ArticleDetailView(DetailView):
@@ -52,12 +59,6 @@ class ArticleDetailView(DetailView):
     def get_object(self, **kwargs):
         title = self.kwargs.get('title')
         try:
-            #now = datetime.datetime.now()
-            #Article.objects.bulk_create([
-            #    Article(url='test001.html',title='test',title_zh='hehe',author='sh',content_md='hh', content_html='hh',tags='hh',views=0,created=now,updated=now),
-            #    Article(url='test001.html',title='test',title_zh='hehe',author='sh',content_md='hh', content_html='hh',tags='hh',views=0,created=now,updated=now),
-            #    Article(url='test001.html',title='test',title_zh='hehe',author='sh',content_md='hh', content_html='hh',tags='hh',views=0,created=now,updated=now)
-            #])
             article = Article.objects.get(title=title)
             article.views += 1
             article.save()
@@ -67,7 +68,7 @@ class ArticleDetailView(DetailView):
         return article
 
 
-class ArticleEditView(FormView):
+class ArticleEditView(AdminRequiredMixin, FormView):
     template_name = 'article_publish.html'
     form_class = ArticlePublishForm
     article = None
