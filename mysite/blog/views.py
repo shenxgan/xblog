@@ -1,10 +1,13 @@
 from django.core.urlresolvers import reverse
 from django.contrib.sitemaps import Sitemap
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import F
 from django.http import Http404
 from django.shortcuts import render
 from django.views.generic.edit import FormView
 from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 
 from models import Article
 from forms import ArticlePublishForm
@@ -31,12 +34,22 @@ class BlogSitemap(Sitemap):
         return obj.url
 
 
-def blog_index(request):
-    context = {
-        'test': 'just for test.',
-        'welcome': 'hello world.'
-    }
-    return render(request, 'blog_index.html', context)
+class ArticleListView(ListView):
+    template_name = 'blog_index.html'
+
+    def get_queryset(self, **kwargs):
+        object_list = Article.objects.all().order_by(F('created').desc())[:100]
+        paginator = Paginator(object_list, 1)
+        page = self.request.GET.get('page')
+        try:
+            object_list = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            object_list = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            object_list = paginator.page(paginator.num_pages)
+        return object_list
 
 
 class ArticlePublishView(AdminRequiredMixin, FormView):

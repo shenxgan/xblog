@@ -123,3 +123,14 @@ img {
 .oauth {
   margin-left: 10px;
 }
+
+/* article list*/
+.article-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 0 20px;
+  margin: 20px 0;
+}
+.summary :not(p){
+  font-size: 100%;
+}

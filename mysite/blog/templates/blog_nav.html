@@ -14,7 +14,14 @@
         <li><a href="#">Link</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
+        {% if user.is_authenticated %}
+        <li>
+        <a href="" title="个人信息"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ user.username }}</a>
+        </li>
+        <li>
+        <a href="{% url 'logout' %}?next=/blog/" title="退出"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+        </li>
+        {% else %}
         <li>
         <div class="sign-in-up">
           <a href="{% url 'register' %}" class="btn btn-info">注册</a>
@@ -25,6 +32,7 @@
           <a href="{% url 'login' %}?next={{ request.path  }}" class="btn btn-info">登录</a>
         </div>
         </li>
+        {% endif %}
       </ul>
     </div>
   </div>
