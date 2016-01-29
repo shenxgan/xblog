@@ -3,6 +3,7 @@
 from django.contrib.auth.models import User
 from django import forms
 
+
 class RegisterForm(forms.Form):
     username = forms.CharField(
         label=u'昵称',
@@ -10,7 +11,7 @@ class RegisterForm(forms.Form):
         max_length=20,
         initial='',
         widget=forms.TextInput(attrs={'class': 'form-control'}),
-        )
+    )
 
     email = forms.EmailField(
         label=u'邮箱',
@@ -18,7 +19,7 @@ class RegisterForm(forms.Form):
         max_length=50,
         initial='',
         widget=forms.TextInput(attrs={'class': 'form-control'}),
-        )
+    )
 
     password = forms.CharField(
         label=u'密码',
@@ -26,14 +27,14 @@ class RegisterForm(forms.Form):
         min_length=6,
         max_length=18,
         widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-        )
+    )
 
     confirm_password = forms.CharField(
         label=u'确认密码',
         min_length=6,
         max_length=18,
         widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-        )
+    )
 
     def clean_username(self):
         username = self.cleaned_data['username']

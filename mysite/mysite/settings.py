@@ -1,4 +1,4 @@
-#coding:utf-8
+# coding:utf-8
 """
 Django settings for mysite project.
 
@@ -58,7 +58,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,14 +77,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = { 
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'xblog',    ## 数据库名称
+        'NAME': 'xblog',        # 数据库名称
         'USER': 'root',
-        'PASSWORD': 'ermiao', ## 安装 mysql 数据库时，输入的 root 用户的密码
+        'PASSWORD': 'ermiao',   # 安装 mysql 数据库时，输入的 root 用户的密码
         'HOST': '127.0.0.1',
-    }   
+    }
 }
 
 # Internationalization

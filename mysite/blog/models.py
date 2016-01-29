@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
 class Article(models.Model):
     url = models.URLField()
     title = models.CharField(max_length=50)
@@ -8,7 +8,7 @@ class Article(models.Model):
     author = models.CharField(max_length=30)
     content_md = models.TextField()
     content_html = models.TextField()
-    #type = models.CharField(max_length=30)  #django, python, ...
+    # type = models.CharField(max_length=30)  #django, python, ...
     tags = models.CharField(max_length=30)
     views = models.IntegerField()
     created = models.DateTimeField()
